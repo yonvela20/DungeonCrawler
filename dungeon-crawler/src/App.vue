@@ -1,31 +1,38 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app class="grey lighten-4">
+    <Navbar/>
+    <v-content class="mx-4 mb-4">
+      <router-view></router-view>
+    </v-content>
+  </v-app>
 </template>
 
+<script>
+import Navbar from "./components/Navbar";
+export default {
+  name: "App",
+  components: {
+    Navbar
+  },
+
+  data() {
+    return {
+      //
+    };
+  }
+};
+</script>
+
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
 }
 </style>
+

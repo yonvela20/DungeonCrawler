@@ -1,0 +1,343 @@
+<template>
+  <div class="dashboard">
+    <v-snackbar v-model="snackbar_delete" :timeout="4000" top color="success">
+      <span>You deleted a project</span>
+      <v-btn flat color="white" @click="snackbar_delete = false">Close</v-btn>
+    </v-snackbar>
+    <h1 class="subheading grey--text">Dashboard</h1>
+    <v-container class="my-5">
+      <v-layout row class="mb-3">
+        <v-tooltip top>
+          <v-btn small flat color="grey" v-on:click="sortBy('title')" slot="activator">
+            <v-icon left small>folder</v-icon>
+            <span class="caption text-lowercase">By character name</span>
+          </v-btn>
+          <span>Sort by character name</span>
+        </v-tooltip>
+
+        <v-tooltip top>
+          <v-btn small flat color="grey" v-on:click="sortBy('person')" slot="activator">
+            <v-icon left small>person</v-icon>
+            <span class="caption text-lowercase">By class name</span>
+          </v-btn>
+          <span>Sort by class name</span>
+        </v-tooltip>
+      </v-layout>
+
+      <v-text-field append-icon="search" label="Filter" single-line hide-details v-model="search"></v-text-field>
+      <v-spacer></v-spacer>
+      <br>
+      <v-card flat v-for="(personaje) in filteredValues" :key="personaje.nombre">
+        <v-layout row wrap :class="`pa-3 personaje ${personaje.raza}`">
+          <v-flex xs6 md2>
+            <div class="caption grey--text">Nombre</div>
+            <div>{{personaje.nombre}}</div>
+          </v-flex>
+          <v-flex xs6 sm4 md2>
+            <div class="caption grey--text">Raza</div>
+            <div>{{personaje.raza}}</div>
+          </v-flex>
+          <v-flex xs6 sm4 md2>
+            <div class="caption grey--text">Dueño</div>
+            <div>{{personaje.duenyo}}</div>
+            <!-- <div>Index: {{ doMath(index) }}</div> -->
+          </v-flex>
+          <v-flex xs6 sm4 md2>
+            <div>
+              <v-chip small :class="`${personaje.raza} white--text caption my-2`">{{personaje.raza}}</v-chip>
+            </div>
+          </v-flex>
+
+          <!-- Delete Yon -->
+          <!-- <v-flex xs6 sm4 md2>
+            <div>
+              <v-btn color="error" small class="right" @click="deleteEntry(personaje.id)">
+                <v-icon small>close</v-icon>
+              </v-btn>
+            </div>
+          </v-flex>-->
+
+          <!-- Cuadro de dialogo al modificar un elemento  -->
+          <v-flex xs6 sm4 md2>
+            <v-dialog v-model="dialog_update" width="500">
+              <template v-slot:activator="{ on }">
+                <v-btn color="primary lighten-2" dark v-on="on">
+                  <v-icon small>create</v-icon>
+                </v-btn>
+              </template>
+
+              <v-card>
+                <v-card-title class="headline grey lighten-2" primary-title>Update this character:</v-card-title>
+                <v-card-text>Id: {{personaje.id}}</v-card-text>
+                <span>Nombre:</span>
+                <v-card-text id="update_nombre">{{personaje.nombre}}</v-card-text>
+                <span>Raza:</span>
+                <v-card-text id="update_raza">Raza: {{personaje.raza}}</v-card-text>
+                <v-text-field
+                  v-model="personaje.con"
+                  type="number"
+                  label="Constitución"
+                  append-outer-icon="add"
+                  @click:append-outer="personaje.con++"
+                  style="padding: 4%"
+                  prepend-icon="remove"
+                  @click:prepend="personaje.con--"
+                  id="update_con"
+                ></v-text-field>
+
+                <v-text-field
+                  v-model="personaje.des"
+                  type="number"
+                  label="Destreza"
+                  append-outer-icon="add"
+                  @click:append-outer="personaje.des++"
+                  style="padding: 4%"
+                  prepend-icon="remove"
+                  @click:prepend="personaje.des--"
+                  id="update_des"
+                ></v-text-field>
+
+                <v-text-field
+                  v-model="personaje.fue"
+                  type="number"
+                  label="Fuerza"
+                  append-outer-icon="add"
+                  @click:append-outer="personaje.fue++"
+                  style="padding: 4%"
+                  prepend-icon="remove"
+                  @click:prepend="personaje.fue--"
+                  id="update_fue"
+                ></v-text-field>
+
+                <v-text-field
+                  v-model="personaje.int"
+                  type="number"
+                  label="Inteligencia"
+                  append-outer-icon="add"
+                  @click:append-outer="personaje.int++"
+                  style="padding: 4%"
+                  prepend-icon="remove"
+                  @click:prepend="personaje.int--"
+                  id="update_int"
+                ></v-text-field>
+
+                <v-text-field
+                  v-model="personaje.sab"
+                  type="number"
+                  label="Sabiduría"
+                  append-outer-icon="add"
+                  @click:append-outer="personaje.sab++"
+                  style="padding: 4%"
+                  prepend-icon="remove"
+                  @click:prepend="personaje.sab--"
+                  id="update_sab"
+                ></v-text-field>
+
+                <v-text-field
+                  v-model="personaje.car"
+                  type="number"
+                  label="Carisma"
+                  append-outer-icon="add"
+                  @click:append-outer="personaje.car++"
+                  style="padding: 4%"
+                  prepend-icon="remove"
+                  @click:prepend="personaje.car--"
+                  id="update_car"
+                ></v-text-field>
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" flat @click="updateEntry()">Update</v-btn>
+                  <v-btn color="grey" flat @click="dialog_update = false">Decline</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-flex>
+
+          <!-- Cuadro de dialogo al borrar un elemento  -->
+          <v-flex right>
+            <v-dialog v-model="dialog_delete" width="500">
+              <template v-slot:activator="{ on }">
+                <v-btn color="red lighten-2" dark v-on="on">
+                  <v-icon small>close</v-icon>
+                </v-btn>
+              </template>
+
+              <v-card>
+                <v-card-title class="headline grey lighten-2" primary-title>Delete this character:</v-card-title>
+                <v-card-text>Id: {{personaje.id}}</v-card-text>
+                <v-card-text>Nombre: {{personaje.nombre}}</v-card-text>
+                <v-card-text>Dueño: {{personaje.duenyo}}</v-card-text>
+                <v-card-text>Raza: {{personaje.raza}}</v-card-text>
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="grey" flat @click="deleteEntry(personaje.id)">Accept</v-btn>
+                  <v-btn color="error" flat @click="dialog_delete = false">Decline</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-flex>
+        </v-layout>
+        <v-divider></v-divider>
+      </v-card>
+    </v-container>
+  </div>
+</template>
+
+<script>
+import db from "@/fb";
+
+export default {
+  data() {
+    return {
+      personajes: [],
+      razas: [
+        "elfo",
+        "humano",
+        "enano",
+        "mediano",
+        "orco",
+        "semielfo",
+        "semiorco"
+      ],
+      search: "",
+      snackbar_delete: false,
+      dialog_delete: false,
+      dialog_update: false
+    };
+  },
+
+  methods: {
+    sortBy(prop) {
+      this.personajes.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
+    },
+
+    doMath(i) {
+      return i++;
+    },
+
+    deleteEntry(id) {
+      db.collection("personajes")
+        .doc(id)
+        .delete()
+        .then(() => {
+          this.snackbar_delete = true;
+          this.dialog_delete = false;
+        });
+    },
+
+    updateEntry(id) {
+      var nombre = document.getElementById("update_con");
+      console.log(nombre.value);
+      /* const personaje = {
+        nombre: this.nombre,
+        raza: this.raza,
+        duenyo: this.duenyo,
+        con: this.con,
+        des: this.des,
+        fue: this.fue,
+        int: this.int,
+        sab: this.sab,
+        car: this.car
+      };
+
+      db.collection("personajes")
+        .add(personaje)
+        .then(() => {
+          //console.log("Added to db");
+          this.loading = false;
+          this.dialog = false;
+          this.$emit("projectAdded");
+        }); */
+    },
+
+    fillData(i, index) {
+      for (i in index) {
+        return i;
+      }
+    }
+  },
+
+  //Personajes filter
+  computed: {
+    filteredValues: function() {
+      return this.personajes.filter(personaje => {
+        return personaje.nombre.match(this.search);
+      });
+    }
+  },
+
+  //FIXME: El borrado solo funciona si se filtra y se queda con un solo resultado sino el indice va mal
+  created() {
+    db.collection("personajes").onSnapshot(res => {
+      const changes = res.docChanges();
+
+      changes.forEach(change => {
+        if (change.type === "added") {
+          this.personajes.push({
+            ...change.doc.data(),
+            id: change.doc.id
+          });
+        } else if (change.type === "removed") {
+          //TODO: utilizar splice y pasarle el indice seleccionado. Una vez se solucione el problema del indice loco...
+          this.personajes.pop().then({
+            ...change.doc.data(),
+            id: change.doc.id
+          });
+        }
+      });
+    });
+  }
+};
+</script>
+
+<style>
+/* definir colores para cada raza */
+.personaje.elfo {
+  border-left: 4px solid #ffeaa7;
+}
+.personaje.humano {
+  border-left: 4px solid #cc8e35;
+}
+.personaje.enano {
+  border-left: 4px solid #aaa69d;
+}
+.personaje.mediano {
+  border-left: 4px solid #fab1a0;
+}
+.personaje.orco {
+  border-left: 4px solid #009432;
+}
+.personaje.semielfo {
+  border-left: 4px solid #833471;
+}
+.personaje.semiorco {
+  border-left: 4px solid #c4e538;
+}
+/* --------------------- */
+.v-chip.elfo {
+  background-color: #ffeaa7;
+}
+.v-chip.humano {
+  background-color: #cc8e35;
+}
+.v-chip.enano {
+  background-color: #aaa69d;
+}
+.v-chip.mediano {
+  background-color: #fab1a0;
+}
+.v-chip.orco {
+  background-color: #009432;
+}
+.v-chip.semielfo {
+  background-color: #833471;
+}
+.v-chip.semiorco {
+  background-color: #c4e538;
+}
+</style>
+
