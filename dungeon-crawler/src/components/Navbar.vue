@@ -43,6 +43,9 @@
         <v-flex class="mt-4 mb-3">
           <Popup @projectAdded="snackbar_add = true"/>
         </v-flex>
+        <v-flex class="mt-4 mb-3">
+          <PopupBlog/>
+        </v-flex>
       </v-layout>
       <v-list>
         <v-list-tile v-for="link in links" :key="link.text" router :to="link.route">
@@ -60,9 +63,12 @@
 
 <script>
 import Popup from "./Popup.vue";
+import PopupBlog from "./PopupBlog.vue";
+
 export default {
   components: {
-    Popup
+    Popup,
+    PopupBlog
   },
   data() {
     return {
@@ -70,7 +76,8 @@ export default {
       links: [
         { icon: "dashboard", text: "Dashboard", route: "/" },
         { icon: "folder", text: "My Blog Entries", route: "/my-blog-entries" },
-        { icon: "person", text: "Team", route: "/team" }
+        { icon: "person", text: "Team", route: "/team" },
+        { icon: "layers", text: "Blog", route: "/blog" }
       ],
       snackbar_add: false
     };

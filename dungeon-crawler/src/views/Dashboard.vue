@@ -69,9 +69,7 @@
               <v-card>
                 <v-card-title class="headline grey lighten-2" primary-title>Update this character:</v-card-title>
                 <v-card-text>Id: {{personaje.id}}</v-card-text>
-                <span>Nombre:</span>
-                <v-card-text id="update_nombre">{{personaje.nombre}}</v-card-text>
-                <span>Raza:</span>
+                <v-card-text id="update_nombre">Nombre: {{personaje.nombre}}</v-card-text>
                 <v-card-text id="update_raza">Raza: {{personaje.raza}}</v-card-text>
                 <v-text-field
                   v-model="personaje.con"
@@ -148,7 +146,14 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" flat @click="updateEntry()">Update</v-btn>
+                  <v-btn
+                    color="primary"
+                    flat
+                    :loading="loading"
+                    @click="updateEntry(personaje.id, personaje.nombre, personaje.raza, 
+                                                                  personaje.duenyo, personaje.con, personaje.des, 
+                                                                  personaje.fue, personaje.int, personaje.sab, personaje.car)"
+                  >Update</v-btn>
                   <v-btn color="grey" flat @click="dialog_update = false">Decline</v-btn>
                 </v-card-actions>
               </v-card>
@@ -201,12 +206,13 @@ export default {
         "mediano",
         "orco",
         "semielfo",
-        "semiorco"
+        "gnomo"
       ],
       search: "",
       snackbar_delete: false,
       dialog_delete: false,
-      dialog_update: false
+      dialog_update: false,
+      loading: false
     };
   },
 
@@ -224,34 +230,35 @@ export default {
         .doc(id)
         .delete()
         .then(() => {
+          console.log("deleted??");
           this.snackbar_delete = true;
           this.dialog_delete = false;
         });
     },
 
-    updateEntry(id) {
-      var nombre = document.getElementById("update_con");
-      console.log(nombre.value);
-      /* const personaje = {
-        nombre: this.nombre,
-        raza: this.raza,
-        duenyo: this.duenyo,
-        con: this.con,
-        des: this.des,
-        fue: this.fue,
-        int: this.int,
-        sab: this.sab,
-        car: this.car
+    updateEntry(id, nombre, raza, duenyo, con, des, fue, int, sab, car) {
+      this.loading = true;
+      const personaje = {
+        nombre: nombre,
+        raza: raza,
+        duenyo: duenyo,
+        con: con,
+        des: des,
+        fue: fue,
+        int: int,
+        sab: sab,
+        car: car
       };
 
       db.collection("personajes")
-        .add(personaje)
+        .doc(id)
+        .set(personaje)
         .then(() => {
-          //console.log("Added to db");
           this.loading = false;
-          this.dialog = false;
+          this.dialog_update = false;
+
           this.$emit("projectAdded");
-        }); */
+        });
     },
 
     fillData(i, index) {
@@ -283,10 +290,12 @@ export default {
           });
         } else if (change.type === "removed") {
           //TODO: utilizar splice y pasarle el indice seleccionado. Una vez se solucione el problema del indice loco...
-          this.personajes.pop().then({
+          console.log("removed");
+          this.$router.go();
+          /* this.personajes.pop().then({
             ...change.doc.data(),
             id: change.doc.id
-          });
+          }); */
         }
       });
     });
@@ -297,16 +306,16 @@ export default {
 <style>
 /* definir colores para cada raza */
 .personaje.elfo {
-  border-left: 4px solid #ffeaa7;
+  border-left: 4px solid #62929e;
 }
 .personaje.humano {
   border-left: 4px solid #cc8e35;
 }
 .personaje.enano {
-  border-left: 4px solid #aaa69d;
+  border-left: 4px solid #807182;
 }
 .personaje.mediano {
-  border-left: 4px solid #fab1a0;
+  border-left: 4px solid #f7b1ab;
 }
 .personaje.orco {
   border-left: 4px solid #009432;
@@ -314,21 +323,21 @@ export default {
 .personaje.semielfo {
   border-left: 4px solid #833471;
 }
-.personaje.semiorco {
+.personaje.gnomo {
   border-left: 4px solid #c4e538;
 }
 /* --------------------- */
 .v-chip.elfo {
-  background-color: #ffeaa7;
+  background-color: #62929e;
 }
 .v-chip.humano {
   background-color: #cc8e35;
 }
 .v-chip.enano {
-  background-color: #aaa69d;
+  background-color: #807182;
 }
 .v-chip.mediano {
-  background-color: #fab1a0;
+  background-color: #f7b1ab;
 }
 .v-chip.orco {
   background-color: #009432;
@@ -336,7 +345,7 @@ export default {
 .v-chip.semielfo {
   background-color: #833471;
 }
-.v-chip.semiorco {
+.v-chip.gnomo {
   background-color: #c4e538;
 }
 </style>
