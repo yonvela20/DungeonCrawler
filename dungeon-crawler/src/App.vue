@@ -49,7 +49,9 @@ export default {
   },
   methods: {
     submit() {
-      this.chkLogin(this.user, this.pass);
+      this.login = true;
+      router.push("/");
+      //this.chkLogin(this.user, this.pass);
     },
 
     /**
@@ -65,9 +67,9 @@ export default {
         .get()
         .then(snapshotUser => {
           snapshotUser.forEach(doc => {
-            //console.log("query usuario", doc.id, "=>", doc.data());
+            console.log("query usuario", doc.id, "=>", doc.data());
 
-            return true;
+            //return true;
           });
         });
 
@@ -76,9 +78,9 @@ export default {
         .get()
         .then(snapshotPass => {
           snapshotPass.forEach(doc => {
-            //console.log("query password", doc.id, "=>", doc.data());
+            console.log("query password", doc.id, "=>", doc.data());
 
-            return true;
+            //return true;
           });
         });
 

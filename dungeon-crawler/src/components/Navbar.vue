@@ -36,7 +36,7 @@
       <v-layout column align-center>
         <v-flex class="mt-5">
           <v-avatar size="100">
-            <img src="/avatar-4.png">
+            <img src="/prueba/avatar-4.png">
           </v-avatar>
           <p class="white--text subheading mt-1">Yon Vela</p>
         </v-flex>

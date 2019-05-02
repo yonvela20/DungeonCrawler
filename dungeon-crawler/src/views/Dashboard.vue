@@ -230,7 +230,7 @@ export default {
         .doc(id)
         .delete()
         .then(() => {
-          console.log("deleted??");
+          //console.log("deleted??");
           this.snackbar_delete = true;
           this.dialog_delete = false;
         });
@@ -290,7 +290,7 @@ export default {
           });
         } else if (change.type === "removed") {
           //TODO: utilizar splice y pasarle el indice seleccionado. Una vez se solucione el problema del indice loco...
-          console.log("removed");
+          //console.log("removed");
           this.$router.go();
           /* this.personajes.pop().then({
             ...change.doc.data(),
