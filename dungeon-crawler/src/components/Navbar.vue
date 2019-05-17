@@ -73,7 +73,7 @@ export default {
   },
   data() {
     return {
-      usuario,
+      usuario: "",
       drawer: false,
       links: [
         { icon: "dashboard", text: "Dashboard", route: "/" },
@@ -92,13 +92,26 @@ export default {
       });
     }
   },
+  computed: {},
 
-  created() {
-    /*  var user = db.collection("usuarios");
+  beforeCreate() {
+    var uid = window.localStorage.getItem("uid");
+    var usersRef = db.collection("usuarios").doc(uid);
 
-    var uid = window.localStorage.getItem('uid');
-    
-    var  */
+    usersRef.get().then(function(doc) {
+      if(doc.exists){
+        var nombre = doc.data().nombre;
+        window.localStorage.setItem("nombre", nombre); 
+      }else{
+        console.log("error");
+      }
+    });
+
+    this.usuario = window.localStorage.getItem("nombre");
+  }, 
+
+  created(){
+    this.usuario = window.localStorage.getItem("nombre");
   }
 };
 </script>

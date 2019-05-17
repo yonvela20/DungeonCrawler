@@ -46,6 +46,7 @@ export default {
     myBlogs() {
       return this.blog.filter(myBlog => {
         return myBlog.autor === "yon";
+        //return myBlog.autor === window.localStorage.getItem("nombre");
       });
     }
   },
