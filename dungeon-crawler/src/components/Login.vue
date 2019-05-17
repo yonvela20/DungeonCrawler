@@ -38,7 +38,6 @@ export default {
               window.localStorage.setItem("uid", user.uid);
             }
           });
-          getData.getName();
           this.$router.replace("/dashboard");
         })
         .catch(err => {
