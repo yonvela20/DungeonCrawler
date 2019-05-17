@@ -1,5 +1,8 @@
 <template>
   <div class="projects">
+    <div>
+      <Navbar/>
+    </div>
     <h1 class="subheading grey--text">Tus posts</h1>
     <v-container class="my-5">
       <v-expansion-panel>
@@ -27,8 +30,13 @@
 </template>
 
 <script>
-import db from "@/fb";
+import { db } from "@/fb";
+import Navbar from "../components/Navbar";
+
 export default {
+  components: {
+    Navbar
+  },
   data() {
     return {
       blog: []

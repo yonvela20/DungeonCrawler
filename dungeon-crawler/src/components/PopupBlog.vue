@@ -20,7 +20,7 @@
 
 <script>
 import format from "date-fns/format";
-import db from "@/fb";
+import { db } from "@/fb";
 
 export default {
   data() {

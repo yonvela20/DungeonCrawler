@@ -1,5 +1,8 @@
 <template>
   <div class="dashboard">
+    <div>
+      <Navbar/>
+    </div>
     <v-snackbar v-model="snackbar_delete" :timeout="4000" top color="success">
       <span>You deleted a project</span>
       <v-btn flat color="white" @click="snackbar_delete = false">Close</v-btn>
@@ -193,9 +196,13 @@
 </template>
 
 <script>
-import db from "@/fb";
+import { db, auth } from "@/fb";
+import Navbar from "../components/Navbar";
 
 export default {
+  components: {
+    Navbar
+  },
   data() {
     return {
       personajes: [],
@@ -230,7 +237,6 @@ export default {
         .doc(id)
         .delete()
         .then(() => {
-          //console.log("deleted??");
           this.snackbar_delete = true;
           this.dialog_delete = false;
         });

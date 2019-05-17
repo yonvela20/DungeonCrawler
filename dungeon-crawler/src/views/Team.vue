@@ -1,5 +1,8 @@
 <template>
   <div class="team">
+    <div>
+      <Navbar/>
+    </div>
     <h1 class="subheading grey--text">Your team</h1>
 
     <v-container class="my-5">
@@ -35,8 +38,13 @@
 </template>
 
 <script>
-import db from "@/fb";
+import { db } from "@/fb";
+import Navbar from "../components/Navbar";
+
 export default {
+  components: {
+    Navbar
+  },
   data() {
     return {
       personajes: []

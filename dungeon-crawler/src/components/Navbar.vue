@@ -26,7 +26,7 @@
         </v-list>
       </v-menu>
 
-      <v-btn flat color="grey">
+      <v-btn flat color="grey" @click="logout">
         <span>Sign Out</span>
         <v-icon right>exit_to_app</v-icon>
       </v-btn>
@@ -38,7 +38,7 @@
           <v-avatar size="100">
             <img src="/prueba/avatar-4.png">
           </v-avatar>
-          <p class="white--text subheading mt-1">Yon Vela</p>
+          <p class="white--text subheading mt-1">{{usuario}}</p>
         </v-flex>
         <v-flex class="mt-4 mb-3">
           <Popup @projectAdded="snackbar_add = true"/>
@@ -64,6 +64,7 @@
 <script>
 import Popup from "./Popup.vue";
 import PopupBlog from "./PopupBlog.vue";
+import { db, auth } from "@/fb";
 
 export default {
   components: {
@@ -72,6 +73,7 @@ export default {
   },
   data() {
     return {
+      usuario,
       drawer: false,
       links: [
         { icon: "dashboard", text: "Dashboard", route: "/" },
@@ -81,6 +83,22 @@ export default {
       ],
       snackbar_add: false
     };
+  },
+
+  methods: {
+    logout() {
+      auth.signOut().then(() => {
+        this.$router.replace("login");
+      });
+    }
+  },
+
+  created() {
+    /*  var user = db.collection("usuarios");
+
+    var uid = window.localStorage.getItem('uid');
+    
+    var  */
   }
 };
 </script>

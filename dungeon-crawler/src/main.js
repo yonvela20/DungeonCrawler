@@ -1,11 +1,23 @@
-import Vue from 'vue'
-import './plugins/vuetify'
-import App from './App.vue'
-import router from './router'
+import Vue from 'vue';
+import './plugins/vuetify';
+import App from './App.vue';
+import router from './router';
 
-Vue.config.productionTip = false
+import VueFire from 'vuefire';
 
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
+import firebase from 'firebase';
+
+Vue.use(VueFire);
+
+Vue.config.productionTip = false;
+
+let app = '';
+
+firebase.auth().onAuthStateChanged(() => {
+	if (!app) {
+		app = new Vue({
+			router,
+			render: h => h(App)
+		}).$mount('#app');
+	}
+});

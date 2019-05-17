@@ -1,5 +1,6 @@
-import firebase from 'firebase/app';
+import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth';
 
 // Initialize Firebase
 var config = {
@@ -10,14 +11,16 @@ var config = {
 	storageBucket: 'dungeon-crawler-c0926.appspot.com',
 	messagingSenderId: '644178020139'
 };
-firebase.initializeApp(config);
 
-//initialize the connection
+firebase.initializeApp(config);
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+
 const db = firebase.firestore();
+const auth = firebase.auth();
 
 db.settings({
 	//Esto ya no hace falta ponerlo en true, viene por defecto
 	//timestampsInSnapshots: true
 });
 
-export default db;
+export { db, auth };

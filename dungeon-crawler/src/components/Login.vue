@@ -1,33 +1,50 @@
 <template>
   <div class="login">
-    <h1 class="subheading grey--text">Login</h1>
     <v-container class="my-5">
-      <v-form class="px-3" ref="form">
-        <v-text-field label="Usuario" v-model="nombre" prepend-icon="person" :rules="inputRules"></v-text-field>
-        <v-text-field
-          label="Contraseña"
-          v-model="pass"
-          prepend-icon="vpn_key"
-          type="password"
-          :rules="inputRules"
-        ></v-text-field>
-        <v-spacer></v-spacer>
-        <v-btn flat class="success mx-0 mt-3" @click="submit" :loading="loading">Login</v-btn>
-      </v-form>
+      <v-content class="mx-4 mb-4">
+        <v-container fill-height class="my-5">
+          <v-form class="px-3" ref="form">
+            <v-text-field v-model="user" label="Usuario" prepend-icon="person"></v-text-field>
+            <v-text-field type="password" v-model="pass" label="Contraseña" prepend-icon="vpn_key"></v-text-field>
+            <v-btn flat class="success mx-0 mt-3" @click="login">Login</v-btn>
+          </v-form>
+        </v-container>
+        <p>
+          <router-link to="/signup">New Here? Create a new account</router-link>
+        </p>
+      </v-content>
     </v-container>
   </div>
 </template>
 
 <script>
 import format from "date-fns/format";
-import db from "@/fb";
+import { db, auth } from "@/fb";
 
 export default {
   data() {
-    return {};
+    return {
+      user: "",
+      pass: ""
+    };
   },
   methods: {
-    submit() {}
+    login() {
+      auth
+        .signInWithEmailAndPassword(this.user, this.pass)
+        .then(user => {
+          auth.onAuthStateChanged(user => {
+            if (user) {
+              window.localStorage.setItem("uid", user.uid);
+            }
+          });
+          getData.getName();
+          this.$router.replace("/dashboard");
+        })
+        .catch(err => {
+          alert(err.message);
+        });
+    }
   },
 
   computed: {}
