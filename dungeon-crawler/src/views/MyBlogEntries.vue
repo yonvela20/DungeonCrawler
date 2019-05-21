@@ -3,7 +3,7 @@
     <div>
       <Navbar/>
     </div>
-    <h1 class="subheading grey--text">Tus posts</h1>
+    <h1 class="subheading grey--text">Mis posts</h1>
     <v-container class="my-5">
       <v-expansion-panel>
         <v-expansion-panel-content v-for="blog in myBlogs" :key="blog.title">
@@ -45,8 +45,8 @@ export default {
   computed: {
     myBlogs() {
       return this.blog.filter(myBlog => {
-        return myBlog.autor === "yon";
-        //return myBlog.autor === window.localStorage.getItem("nombre");
+        //return myBlog.autor === "yon";
+        return myBlog.autor === window.localStorage.getItem("nombre");
       });
     }
   },

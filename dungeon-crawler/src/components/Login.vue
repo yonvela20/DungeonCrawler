@@ -10,7 +10,7 @@
           </v-form>
         </v-container>
         <p>
-          <router-link to="/signup">New Here? Create a new account</router-link>
+          <router-link to="/signup">New here? Create an account</router-link>
         </p>
       </v-content>
     </v-container>
@@ -36,9 +36,22 @@ export default {
           auth.onAuthStateChanged(user => {
             if (user) {
               window.localStorage.setItem("uid", user.uid);
+
+              var uid = window.localStorage.getItem("uid");
+              var usersRef = db.collection("usuarios").doc(uid);
+
+              usersRef.get().then(function(doc) {
+                if (doc.exists) {
+                  var nombre = doc.data().nombre;
+                  window.localStorage.setItem("nombre", nombre);
+                } else {
+                  console.log("error");
+                }
+              });
             }
           });
           this.$router.replace("/dashboard");
+          //this.$router.go();
         })
         .catch(err => {
           alert(err.message);

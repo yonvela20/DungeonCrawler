@@ -1,6 +1,5 @@
 <template>
   <div class="login">
-    <h1 class="subheading grey--text">Login</h1>
     <v-container class="my-5">
       <v-content class="mx-4 mb-4">
         <v-container fill-height class="my-5">

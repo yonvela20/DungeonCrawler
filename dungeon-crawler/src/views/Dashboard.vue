@@ -13,21 +13,21 @@
         <v-tooltip top>
           <v-btn small flat color="grey" v-on:click="sortBy('title')" slot="activator">
             <v-icon left small>folder</v-icon>
-            <span class="caption text-lowercase">By character name</span>
+            <span class="caption text-lowercase">Ordenar por nombre</span>
           </v-btn>
-          <span>Sort by character name</span>
+          <span>Ordenar por nombre</span>
         </v-tooltip>
 
         <v-tooltip top>
           <v-btn small flat color="grey" v-on:click="sortBy('person')" slot="activator">
             <v-icon left small>person</v-icon>
-            <span class="caption text-lowercase">By class name</span>
+            <span class="caption text-lowercase">Ordenar por clase</span>
           </v-btn>
-          <span>Sort by class name</span>
+          <span>Ordenar por clase</span>
         </v-tooltip>
       </v-layout>
 
-      <v-text-field append-icon="search" label="Filter" single-line hide-details v-model="search"></v-text-field>
+      <v-text-field append-icon="search" label="Filtrar" single-line hide-details v-model="search"></v-text-field>
       <v-spacer></v-spacer>
       <br>
       <v-card flat v-for="(personaje) in filteredValues" :key="personaje.nombre">
@@ -205,6 +205,7 @@ export default {
   },
   data() {
     return {
+      idSeleccionado: "",
       personajes: [],
       razas: [
         "elfo",
@@ -219,7 +220,8 @@ export default {
       snackbar_delete: false,
       dialog_delete: false,
       dialog_update: false,
-      loading: false
+      loading: false,
+      nombre: window.localStorage.getItem("nombre")
     };
   },
 
@@ -233,6 +235,7 @@ export default {
     },
 
     deleteEntry(id) {
+      this.idSeleccionado = id;
       db.collection("personajes")
         .doc(id)
         .delete()
@@ -271,13 +274,19 @@ export default {
       for (i in index) {
         return i;
       }
+    },
+
+    myCharacters() {
+      return this.personajes.filter(myCharacters => {
+        return myCharacters.duenyo === this.nombre;
+      });
     }
   },
 
   //Personajes filter
   computed: {
-    filteredValues: function() {
-      return this.personajes.filter(personaje => {
+    filteredValues() {
+      return this.myCharacters().filter(personaje => {
         return personaje.nombre.match(this.search);
       });
     }
@@ -285,6 +294,8 @@ export default {
 
   //FIXME: El borrado solo funciona si se filtra y se queda con un solo resultado sino el indice va mal
   created() {
+    //this.$router.go();
+
     db.collection("personajes").onSnapshot(res => {
       const changes = res.docChanges();
 
@@ -296,9 +307,9 @@ export default {
           });
         } else if (change.type === "removed") {
           //TODO: utilizar splice y pasarle el indice seleccionado. Una vez se solucione el problema del indice loco...
-          //console.log("removed");
+          //console.log("borrado");
           this.$router.go();
-          /* this.personajes.pop().then({
+          /* this.personajes.splice(this.idSeleccionado).then({
             ...change.doc.data(),
             id: change.doc.id
           }); */

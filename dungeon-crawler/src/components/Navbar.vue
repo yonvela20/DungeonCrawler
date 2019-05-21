@@ -1,8 +1,8 @@
 <template>
   <nav>
     <v-snackbar v-model="snackbar_add" :timeout="4000" top color="success">
-      <span>You added a new project</span>
-      <v-btn flat color="white" @click="snackbar_add = false">Close</v-btn>
+      <span>Has añadido un nuevo personaje</span>
+      <v-btn flat color="white" @click="snackbar_add = false">Cerrar</v-btn>
     </v-snackbar>
 
     <v-toolbar flat app>
@@ -27,7 +27,7 @@
       </v-menu>
 
       <v-btn flat color="grey" @click="logout">
-        <span>Sign Out</span>
+        <span>Salir</span>
         <v-icon right>exit_to_app</v-icon>
       </v-btn>
     </v-toolbar>
@@ -77,9 +77,10 @@ export default {
       drawer: false,
       links: [
         { icon: "dashboard", text: "Dashboard", route: "/" },
-        { icon: "folder", text: "My Blog Entries", route: "/my-blog-entries" },
-        { icon: "person", text: "Team", route: "/team" },
-        { icon: "layers", text: "Blog", route: "/blog" }
+        { icon: "person", text: "Equipo", route: "/team" },
+        { icon: "folder", text: "Mis posts", route: "/my-blog-entries" },
+        { icon: "layers", text: "Blog", route: "/blog" },
+        { icon: "person_pin", text: "Social", route: "/social" }
       ],
       snackbar_add: false
     };
@@ -87,6 +88,8 @@ export default {
 
   methods: {
     logout() {
+      window.localStorage.clear();
+
       auth.signOut().then(() => {
         this.$router.replace("login");
       });
@@ -94,23 +97,21 @@ export default {
   },
   computed: {},
 
-  beforeCreate() {
-    var uid = window.localStorage.getItem("uid");
+  beforeCreate() {},
+
+  created() {
+    /*     var uid = window.localStorage.getItem("uid");
     var usersRef = db.collection("usuarios").doc(uid);
 
     usersRef.get().then(function(doc) {
-      if(doc.exists){
+      if (doc.exists) {
         var nombre = doc.data().nombre;
-        window.localStorage.setItem("nombre", nombre); 
-      }else{
+        window.localStorage.setItem("nombre", nombre);
+      } else {
         console.log("error");
       }
-    });
+    }); */
 
-    this.usuario = window.localStorage.getItem("nombre");
-  }, 
-
-  created(){
     this.usuario = window.localStorage.getItem("nombre");
   }
 };

@@ -4,6 +4,7 @@ import Dashboard from './views/Dashboard.vue';
 import myBlogEntries from './views/MyBlogEntries.vue';
 import Team from './views/Team.vue';
 import Blog from './views/Blog.vue';
+import Social from './views/Social.vue';
 import Login from './components/Login.vue';
 import SignUp from './components/SignUp.vue';
 import firebase from 'firebase';
@@ -62,14 +63,15 @@ let router = new Router({
 		{
 			path: '/',
 			redirect: '/login'
-		} /* ,
+		},
 		{
-			name: 'Navbar',
-			path: '',
+			path: '/social',
+			name: 'social',
+			component: Social,
 			meta: {
 				requiresAuth: true
 			}
-		} */
+		}
 	]
 });
 

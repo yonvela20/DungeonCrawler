@@ -3,11 +3,11 @@
     <div>
       <Navbar/>
     </div>
-    <h1 class="subheading grey--text">Your team</h1>
+    <h1 class="subheading grey--text">Tu equipo</h1>
 
     <v-container class="my-5">
       <v-layout row wrap>
-        <v-flex xs12 sm6 md4 lg3 v-for="personaje in personajes" :key="personaje.nombre">
+        <v-flex xs12 sm6 md4 lg3 v-for="personaje in myCharacters" :key="personaje.nombre">
           <v-card flat class="text-xs-center ma-3">
             <v-responsive class="pt-4">
               <v-avatar size="100" class="grey lighten-2">
@@ -49,6 +49,15 @@ export default {
     return {
       personajes: []
     };
+  },
+
+  computed: {
+    myCharacters() {
+      var nombre = window.localStorage.getItem("nombre");
+      return this.personajes.filter(myCharacters => {
+        return myCharacters.duenyo === nombre;
+      });
+    }
   },
 
   created() {

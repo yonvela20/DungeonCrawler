@@ -27,7 +27,7 @@ export default {
     return {
       titulo: "",
       contenido: "",
-      autor: "yon",
+      autor: window.localStorage.getItem("nombre"),
       like: 1,
       dislike: 0,
       inputRules: [

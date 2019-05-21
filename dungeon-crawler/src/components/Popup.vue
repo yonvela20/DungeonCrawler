@@ -1,14 +1,20 @@
 <template>
   <v-dialog max-width="600px" v-model="dialog">
-    <v-btn flat slot="activator" class="success">Add new character</v-btn>
+    <v-btn flat slot="activator" class="success">Añadir un nuevo personaje</v-btn>
     <v-card ref="card">
       <v-card-title>
-        <h2>Add a new character</h2>
+        <h2>Añadir un nuevo personaje</h2>
       </v-card-title>
       <v-card-text>
         <v-form class="px-3" ref="form">
           <v-text-field label="Nombre" v-model="nombre" prepend-icon="folder" :rules="inputRules"></v-text-field>
-          <v-text-field label="Duenyo" v-model="duenyo" prepend-icon="person" :rules="inputRules"></v-text-field>
+          <v-text-field
+            label="Duenyo"
+            readonly
+            v-model="duenyo"
+            prepend-icon="person"
+            :rules="inputRules"
+          >{{duenyo}}</v-text-field>
           <v-text-field
             v-model="con"
             type="number"
@@ -97,7 +103,7 @@ export default {
     return {
       nombre: "",
       raza: "",
-      duenyo: "",
+      duenyo: window.localStorage.getItem("nombre"),
       con: 0,
       des: 0,
       fue: 0,
@@ -145,7 +151,7 @@ export default {
             this.$emit("projectAdded");
 
             this.nombre = null;
-            this.raza = null;
+            //this.raza = null;
             this.duenyo = null;
             (this.con = 0),
               (this.des = 0),
