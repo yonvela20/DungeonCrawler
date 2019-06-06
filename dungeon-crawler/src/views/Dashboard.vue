@@ -293,7 +293,6 @@ export default {
     }
   },
 
-  //FIXME: El borrado solo funciona si se filtra y se queda con un solo resultado sino el indice va mal
   beforeCreate(){
 
     db.collection("personajes").onSnapshot(res => {
@@ -306,13 +305,7 @@ export default {
             id: change.doc.id
           });
         } else if (change.type === "removed") {
-          //TODO: utilizar splice y pasarle el indice seleccionado. Una vez se solucione el problema del indice loco...
-          //console.log("borrado");
           this.$router.go();
-          /* this.personajes.splice(this.idSeleccionado).then({
-            ...change.doc.data(),
-            id: change.doc.id
-          }); */
         }
       });
       setTimeout(function(){}, 1000);
