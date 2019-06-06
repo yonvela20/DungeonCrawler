@@ -1,6 +1,6 @@
 <template>
   <v-dialog max-width="600px" v-model="dialog">
-    <v-btn flat slot="activator" class="success">Nuevo Blog</v-btn>
+    <v-btn flat slot="activator" class="success">Nuevo Post</v-btn>
     <v-card ref="card">
       <v-card-title>
         <h2>Añadir una nueva entrada</h2>
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import format from "date-fns/format";
 import { db } from "@/fb";
 
 export default {

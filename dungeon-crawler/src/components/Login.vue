@@ -42,15 +42,17 @@ export default {
 
               usersRef.get().then(function(doc) {
                 if (doc.exists) {
+                  console.log("yeee");
                   var nombre = doc.data().nombre;
                   window.localStorage.setItem("nombre", nombre);
+                  console.log(window.localStorage.getItem("nombre"));
                 } else {
                   console.log("error");
                 }
               });
             }
           });
-          this.$router.replace("/dashboard");
+          this.$router.go("/dashboard");
           //this.$router.go();
         })
         .catch(err => {

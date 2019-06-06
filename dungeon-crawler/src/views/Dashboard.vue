@@ -196,8 +196,9 @@
 </template>
 
 <script>
-import { db, auth } from "@/fb";
+import { db } from "@/fb";
 import Navbar from "../components/Navbar";
+import { setTimeout } from 'timers';
 
 export default {
   components: {
@@ -293,8 +294,7 @@ export default {
   },
 
   //FIXME: El borrado solo funciona si se filtra y se queda con un solo resultado sino el indice va mal
-  created() {
-    //this.$router.go();
+  beforeCreate(){
 
     db.collection("personajes").onSnapshot(res => {
       const changes = res.docChanges();
@@ -315,7 +315,12 @@ export default {
           }); */
         }
       });
+      setTimeout(function(){}, 1000);
     });
+  },
+  created() {
+    //this.$router.go();
+
   }
 };
 </script>
